@@ -33,7 +33,7 @@ namespace LiveScoring.Services
             new Driver() {Car = "Red Bull", FirstName = "Max", LastName = "Verstappen", Number= 1},
             new Driver() {Car = "McLaren", FirstName = "Daniel", LastName = "Ricciardo", Number= 33},
             new Driver() {Car = "McLaren", FirstName = "Lando", LastName = "Norris", Number= 14},
-            new Driver() {Car = "Mercedes", FirstName = "Lewis", LastName = "Hamilton", Number= 4},
+            new Driver() {Car = "Mercedes", FirstName = "Lewis", LastName = "Hamilton", Number= 44},
             new Driver() {Car = "Mercedes", FirstName = "George", LastName = "Russell", Number= 25}
         };
 

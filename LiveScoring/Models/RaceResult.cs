@@ -14,7 +14,7 @@ namespace LiveScoring.Models
 
         public override string ToString()
         {
-            return $"Position {Position}\tDriver {Driver}\t Points {Points}\t GridPosition {GridPosition}\t Laps {Laps} \t FastestLap {FastestLap}";
+            return $"Position {Position}\tDriver {Driver}\t Points {Points}\t GridPosition {GridPosition}\t Laps {Laps} \t FastestLap {FastestLap} \t Out {Out}";
         }
     }
 }
