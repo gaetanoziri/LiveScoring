@@ -33,7 +33,8 @@ namespace LiveScoring
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LiveScoring", Version = "v1" });
             });
-            services.AddSingleton<ILeaderboard, RandomLeaderboard>();
+            services.AddMemoryCache();
+            services.AddSingleton<ILeaderboard, ScrapingLeaderboard>();
             services.AddSingleton<IScoring, Scoring>();
         }
 

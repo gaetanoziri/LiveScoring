@@ -1,6 +1,7 @@
 ﻿using LiveScoring.Models;
 using LiveScoring.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +17,54 @@ namespace LiveScoring.Controllers
     {
         private ILeaderboard _leaderboard;
         private IScoring _scoring;
+        private IMemoryCache _cacheProvider;
 
-        public LiveScoringController(ILeaderboard leaderboardService, IScoring scoring)
+        public LiveScoringController(ILeaderboard leaderboardService, IScoring scoring, IMemoryCache memoryCache)
         {
             this._leaderboard = leaderboardService;
             this._scoring = scoring;
+            this._cacheProvider = memoryCache;
         }
-
 
         [HttpGet]
         [Route("leaderboard")]
         public IEnumerable<RaceResult> GetLeaderboard([FromQuery] Sport sport, [FromQuery] int gp)
         {
-            return this._leaderboard.GetLeaderboard(sport, gp);
-        }
+            var key = $"{Request.Path}{Request.QueryString}";
+            IEnumerable<RaceResult> result;
+            if (!_cacheProvider.TryGetValue(key, out result))
+            {
+                result = this._leaderboard.GetLeaderboard(sport, gp);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(1),
+                    Size = 1024
+                };
+                _cacheProvider.Set(key, result, cacheEntryOptions);
+            }
 
+            return result;
+        }
 
         [HttpGet]
         [Route("leaderboard/sport/{sport}/gp/{gp}")]
         public IEnumerable<RaceResult> GetLeaderboard2([FromRoute] Sport sport, [FromRoute] int gp)
         {
-            return this._leaderboard.GetLeaderboard(sport, gp);
+            var key = $"{Request.Path}{Request.QueryString}";
+            IEnumerable<RaceResult> result;
+            if (!_cacheProvider.TryGetValue(key, out result))
+            {
+                result = this._leaderboard.GetLeaderboard(sport, gp);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(1),
+                    Size = 1024
+                };
+                _cacheProvider.Set(key, result, cacheEntryOptions);
+            }
+            return result;
         }
 
         [HttpPost]

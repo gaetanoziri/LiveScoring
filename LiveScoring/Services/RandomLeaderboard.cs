@@ -67,5 +67,10 @@ namespace LiveScoring.Services
 
             return standings;
         }
+
+        public IList<RaceResult> GetLatestLeaderboard(Sport sport)
+        {
+            return this.GetLeaderboard(sport, 0);
+        }
     }
 }
