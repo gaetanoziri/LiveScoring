@@ -34,8 +34,12 @@ namespace LiveScoring
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LiveScoring", Version = "v1" });
             });
             services.AddMemoryCache();
-            services.AddSingleton<ILeaderboard, ScrapingLeaderboard>();
+            services.AddSingleton<ILeaderboard, Leaderboard>();
             services.AddSingleton<IScoring, Scoring>();
+            services.AddSingleton<IScrapingLeaderboard, ScrapingLeaderboardF1>();
+            services.AddSingleton<IScrapingLeaderboard, ScrapingLeaderboardMotoGP>();
+            services.AddSingleton<IScrapingLeaderboard, ScrapingLeaderboardFE>();
+            services.AddSingleton<ScrapingLeaderboardFactory, ScrapingLeaderboardFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

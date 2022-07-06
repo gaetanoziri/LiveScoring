@@ -37,13 +37,13 @@ namespace LiveScoring.Services
             new Driver() {Car = "Mercedes", FirstName = "George", LastName = "Russell", Number= 25}
         };
 
-        public IList<RaceResult> GetLeaderboard(Sport sport, int gp)
+        public IList<RaceResult> GetLeaderboard(Sport sport, int year, int round)
         {
             //TODO: generate a random leaderboard using the GP as a seed
 
             List<RaceResult> standings = new List<RaceResult>();
 
-            Random random = new Random(gp);
+            Random random = new Random(year*round);
 
             int[] positions = Enumerable.Range(1, drivers.Count).OrderBy(x => random.Next()).ToArray();
             int[] gridPositions = Enumerable.Range(1, drivers.Count).OrderBy(x => random.Next()).ToArray();
@@ -70,7 +70,7 @@ namespace LiveScoring.Services
 
         public IList<RaceResult> GetLatestLeaderboard(Sport sport)
         {
-            return this.GetLeaderboard(sport, 0);
+            return this.GetLeaderboard(sport, DateTime.Now.Year, 0);
         }
     }
 }

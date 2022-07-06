@@ -8,61 +8,62 @@ using System.Threading.Tasks;
 
 namespace LiveScoring.Services
 {
-    public class ScrapingLeaderboard : ILeaderboard
+    public class ScrapingLeaderboardFE : IScrapingLeaderboard
     {
-        private static Dictionary<Tuple<Sport, int>, string> links = 
-            new Dictionary<Tuple<Sport, int>, string>()
+        private static Dictionary<Tuple<Sport, int, int>, string> links = 
+            new Dictionary<Tuple<Sport, int, int>, string>()
         {
                 { 
-                    new Tuple<Sport, int>(Sport.FE, 0),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 0),
                     "https://www.fiaformulae.com/en/results/race-results/"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 1),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 1),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210201"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 2),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 2),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210202"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 3),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 3),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210203"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 4),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 4),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210204"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 5),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 5),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210205"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 6),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 6),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210206"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 7),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 7),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210207"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 8),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 8),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210208"
                 },
                 {
-                    new Tuple<Sport, int>(Sport.FE, 9),
+                    new Tuple<Sport, int, int>(Sport.FE, 2022, 9),
                     "https://www.fiaformulae.com/en/results/race-results/?championship=2022021&race=20210209"
                 }
         };
 
-        public IList<RaceResult> GetLatestLeaderboard(Sport sport)
+        public IList<RaceResult> GetLatestLeaderboard()
         {
-            return this.GetLeaderboard(sport, 0);
+            return this.GetLeaderboard(DateTime.Now.Year, 0);
         }
 
-        public IList<RaceResult> GetLeaderboard(Sport sport, int gp)
+        public IList<RaceResult> GetLeaderboard(int year, int round)
         {
-            Tuple<Sport, int> key = new Tuple<Sport, int>(sport, gp);
+            
+            Tuple<Sport, int, int> key = new Tuple<Sport, int, int>(Sport.FE, year, round);
             IList<RaceResult> leaderboard = new List<RaceResult>();
 
             if (links.ContainsKey(key))

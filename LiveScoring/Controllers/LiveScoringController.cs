@@ -28,13 +28,13 @@ namespace LiveScoring.Controllers
 
         [HttpGet]
         [Route("leaderboard")]
-        public IEnumerable<RaceResult> GetLeaderboard([FromQuery] Sport sport, [FromQuery] int gp)
+        public IEnumerable<RaceResult> GetLeaderboard([FromQuery] Sport sport, [FromQuery] int year, [FromQuery] int round)
         {
             var key = $"{Request.Path}{Request.QueryString}";
             IEnumerable<RaceResult> result;
             if (!_cacheProvider.TryGetValue(key, out result))
             {
-                result = this._leaderboard.GetLeaderboard(sport, gp);
+                result = this._leaderboard.GetLeaderboard(sport, year, round);
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                 {
                     AbsoluteExpiration = DateTime.Now.AddMinutes(5),
@@ -48,14 +48,14 @@ namespace LiveScoring.Controllers
         }
 
         [HttpGet]
-        [Route("leaderboard/sport/{sport}/gp/{gp}")]
-        public IEnumerable<RaceResult> GetLeaderboard2([FromRoute] Sport sport, [FromRoute] int gp)
+        [Route("leaderboard/sport/{sport}/year/{year}/round/{round}")]
+        public IEnumerable<RaceResult> GetLeaderboard2([FromRoute] Sport sport, [FromRoute] int year, [FromRoute] int round)
         {
             var key = $"{Request.Path}{Request.QueryString}";
             IEnumerable<RaceResult> result;
             if (!_cacheProvider.TryGetValue(key, out result))
             {
-                result = this._leaderboard.GetLeaderboard(sport, gp);
+                result = this._leaderboard.GetLeaderboard(sport, year, round);
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                 {
                     AbsoluteExpiration = DateTime.Now.AddMinutes(5),
@@ -68,28 +68,28 @@ namespace LiveScoring.Controllers
         }
 
         [HttpPost]
-        [Route("score/sport/{sport}/gp/{gp}")]
-        public ActionResult<int> GetScoring([FromRoute] Sport sport, [FromRoute] int gp, [FromBody] IList<Driver> drivers)
+        [Route("score/sport/{sport}/year/{year}/round/{round}")]
+        public ActionResult<int> GetScoring([FromRoute] Sport sport, [FromRoute] int year, [FromRoute] int round, [FromBody] IList<Driver> drivers)
         {
             if(drivers == null || drivers.Count() != 3)
             {
                 return BadRequest();
             }
 
-            IList<RaceResult> leaderboard = this._leaderboard.GetLeaderboard(sport, gp);
+            IList<RaceResult> leaderboard = this._leaderboard.GetLeaderboard(sport, year, round);
             return this._scoring.CalculateScore(leaderboard, drivers);
         }
 
         [HttpPost]
-        [Route("score-detailed/sport/{sport}/gp/{gp}")]
-        public ActionResult<Dictionary<int, IList<ScoringEvent>>> GetDetailedScoring([FromRoute] Sport sport, [FromRoute] int gp, [FromBody] IList<Driver> drivers)
+        [Route("score-detailed/sport/{sport}/year/{year}/round/{round}")]
+        public ActionResult<Dictionary<int, IList<ScoringEvent>>> GetDetailedScoring([FromRoute] Sport sport, [FromRoute] int year, [FromRoute] int round, [FromBody] IList<Driver> drivers)
         {
             if (drivers == null || drivers.Count() != 3)
             {
                 return BadRequest();
             }
 
-            IList<RaceResult> leaderboard = this._leaderboard.GetLeaderboard(sport, gp);
+            IList<RaceResult> leaderboard = this._leaderboard.GetLeaderboard(sport, year, round);
             return this._scoring.CalculateDetaildScore(leaderboard, drivers);
         }
 

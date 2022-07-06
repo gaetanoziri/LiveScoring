@@ -16,7 +16,7 @@ namespace LiveScoring.Services.Tests
         public void GetLeaderboardTest()
         {
             ILeaderboard leaderboard = new RandomLeaderboard();
-            foreach (var result in leaderboard.GetLeaderboard(Sport.F1, 20)){
+            foreach (var result in leaderboard.GetLeaderboard(Sport.F1, 2022, 20)){
                 Console.WriteLine(result);
             }
         }

@@ -14,8 +14,8 @@ namespace LiveScoring.Services.Tests
         [TestMethod()]
         public void GetLeaderboardTest()
         {
-            ILeaderboard leaderboard = new ScrapingLeaderboard();
-            leaderboard.GetLeaderboard(Models.Sport.FE, 1);
+            ILeaderboard leaderboard = new Leaderboard();
+            leaderboard.GetLeaderboard(Models.Sport.FE, 2022, 1);
         }
     }
 }

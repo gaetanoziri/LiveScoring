@@ -32,7 +32,7 @@ namespace LiveScoring.Services.Tests
 
             //Act
             int score = scoringService.CalculateScore(
-                leaderboardService.GetLeaderboard(Sport.F1, gp), team);
+                leaderboardService.GetLeaderboard(Sport.F1, 2022, gp), team);
 
             //Assert
             Assert.AreEqual(scorePere + scoreRicc + scoreRuss, score);
